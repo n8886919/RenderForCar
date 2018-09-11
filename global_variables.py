@@ -8,7 +8,7 @@ g_render4cnn_root_folder = os.path.dirname(os.path.abspath(__file__))
 # ------------------------------------------------------------
 # PATHS
 # ------------------------------------------------------------
-g_blender_executable_path = '~/Desktop/RenderForCNN/blender-2.71-linux-glibc211-x86_64/blender' #!! MODIFY if necessary
+g_blender_executable_path = '~/Desktop/RenderForCar/blender-2.71-linux-glibc211-x86_64/blender' #!! MODIFY if necessary
 g_data_folder = os.path.abspath(os.path.join(g_render4cnn_root_folder, 'data'))
 g_datasets_folder = os.path.abspath(os.path.join(g_render4cnn_root_folder, 'datasets'))
 g_shapenet_root_folder = os.path.join(g_datasets_folder, 'shapenetcore')

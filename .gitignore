@@ -10,6 +10,7 @@ global_variables.m
 data/CAD_preview
 data/syn_images*
 data/view_*
+data/raw.txt
 data/truncation_*
 data/real_images
 data/tmp*
@@ -20,3 +21,5 @@ datasets/shapenetcore
 datasets/sun2012pascalformat
 *deformed*
 experiments
+
+*.png

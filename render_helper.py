@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #sys.path.append(os.path.dirname(BASE_DIR))
 from global_variables import *
 
-model_list = 'selected_4838models.txt'
+model_list = 'selected_704models.txt'
 
 '''
 @input: 

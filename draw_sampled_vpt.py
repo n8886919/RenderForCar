@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-ele_max = 25 #30
+ele_max = 20 #30
 til_max = 10 #+-til_max 
 #azi = range(0,360,24) # 0~360 
 azi = range(0,360,15) # 0~360
@@ -78,7 +78,8 @@ for i in range(sample):
 		E.append(ele*180/math.pi)
 		#E.append(10)
 		A.append((phi*180/math.pi)%360)
-		T.append((np.random.rand()-0.5)*2*til_max)
+		T.append(0.)
+		#T.append((np.random.rand()-0.5)*2*til_max)
 		#D.append(np.random.rand()*9+1)
 		D.append(1.5)
 		X.append(x)
@@ -93,7 +94,7 @@ for i in range(sample):
 		C.append(colormap[la])
 a = [A,E,T,D,L]
 b = np.swapaxes(a,1,0)
-np.savetxt('car24.txt', b, fmt='%.3f %.3f %.3f %.3f %d')
+np.savetxt('data/view_distribution/car24_no_tile.txt', b, fmt='%.3f %.3f %.3f %.3f %d')
 
 f1 = plt.figure(1)
 ax = Axes3D(f1)

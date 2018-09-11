@@ -215,6 +215,7 @@ for param in view_params:
     bpy.ops.render.render( write_still=True )
     rawpara_path = os.path.join(g_data_folder, 'raw.txt')
     with open(rawpara_path, 'a') as f:
-        f.write(syn_image_file+' %f %f %f %f\n'%(azimuth_deg, elevation_deg, theta_deg, rho))
+        #f.write(syn_image_file+' %f %f %f %f\n'%(azimuth_deg, elevation_deg, theta_deg, rho))
+        f.write(os.path.join(syn_images_folder, syn_image_file)+' %f %f %f %f\n'%(azimuth_deg, elevation_deg, theta_deg, rho))
 
     img_num += 1
