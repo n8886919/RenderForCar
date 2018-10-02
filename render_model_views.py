@@ -209,13 +209,15 @@ for param in view_params:
     camObj.rotation_quaternion[2] = q[2]
     camObj.rotation_quaternion[3] = q[3]
     # ** multiply tilt by -1 to match pascal3d annotations **
-    theta_deg = (-1*theta_deg)%360
-    syn_image_file = './label%d_no%d.png' % (label, img_num)
+    #theta_deg = (-1*theta_deg)%360
+    #syn_image_file = './label%d_no%d.png' % (label, img_num)
+    syn_image_file = './no%d_azi%d_ele%d.png' % (img_num, azimuth_deg*100, elevation_deg*100)
     bpy.data.scenes['Scene'].render.filepath = os.path.join(syn_images_folder, syn_image_file)
     bpy.ops.render.render( write_still=True )
+    '''
     rawpara_path = os.path.join(g_data_folder, 'raw.txt')
     with open(rawpara_path, 'a') as f:
         #f.write(syn_image_file+' %f %f %f %f\n'%(azimuth_deg, elevation_deg, theta_deg, rho))
         f.write(os.path.join(syn_images_folder, syn_image_file)+' %f %f %f %f\n'%(azimuth_deg, elevation_deg, theta_deg, rho))
-
+    '''
     img_num += 1

@@ -6,16 +6,7 @@
 *.caffemodel
 *.solverstate
 blender-2.71-linux-glibc211-x86_64
-global_variables.m
-data/CAD_preview
-data/syn_images*
-data/view_*
-data/raw.txt
-data/truncation_*
-data/real_images
-data/tmp*
-data/real_lmdbs
-data/syn_lmdbs
+data/*
 datasets/pascal3d
 datasets/shapenetcore
 datasets/sun2012pascalformat

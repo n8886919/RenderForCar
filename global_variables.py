@@ -38,7 +38,7 @@ g_syn_images_bkg_overlaid_folder = os.path.join(g_data_folder, 'syn_images_cropp
 #g_syn_bkg_folder = os.path.join(g_sun2012pascalformat_root_folder, 'JPEGImages')
 g_blank_blend_file_path = os.path.join(g_render4cnn_root_folder, 'blank.blend') 
 g_syn_images_num_per_CAD = 100
-g_syn_rendering_thread_num = 5
+g_syn_rendering_thread_num = 2
 
 g_view_distribution_folder = os.path.join(g_data_folder, 'view_distribution')
 g_view_distribution_files = dict(zip(g_shape_synsets, [os.path.join(g_view_distribution_folder, name+'.txt') for name in g_shape_names]))
