@@ -55,13 +55,14 @@ def camPosToQuaternion(cx, cy, cz):
     q4 = -b * d * w2 + a * d * w3
     return (q1, q2, q3, q4)
 
+
 def quaternionFromYawPitchRoll(yaw, pitch, roll):
     c1 = math.cos(yaw / 2.0)
     c2 = math.cos(pitch / 2.0)
-    c3 = math.cos(roll / 2.0)    
+    c3 = math.cos(roll / 2.0)
     s1 = math.sin(yaw / 2.0)
     s2 = math.sin(pitch / 2.0)
-    s3 = math.sin(roll / 2.0)    
+    s3 = math.sin(roll / 2.0)
     q1 = c1 * c2 * c3 + s1 * s2 * s3
     q2 = c1 * c2 * s3 - s1 * s2 * c3
     q3 = c1 * s2 * c3 + s1 * c2 * s3
@@ -91,14 +92,15 @@ def camPosToQuaternion(cx, cy, cz):
     if cz < 0:
         roll = -roll    
     print("%f %f %f" % (yaw, pitch, roll))
-    q2a, q2b, q2c, q2d = quaternionFromYawPitchRoll(yaw, pitch, roll)    
+    q2a, q2b, q2c, q2d = quaternionFromYawPitchRoll(yaw, pitch, roll)
     q1 = q1a * q2a - q1b * q2b - q1c * q2c - q1d * q2d
     q2 = q1b * q2a + q1a * q2b + q1d * q2c - q1c * q2d
     q3 = q1c * q2a - q1d * q2b + q1a * q2c + q1b * q2d
     q4 = q1d * q2a + q1c * q2b - q1b * q2c + q1a * q2d
     return (q1, q2, q3, q4)
 
-def camRotQuaternion(cx, cy, cz, theta): 
+
+def camRotQuaternion(cx, cy, cz, theta):
     theta = theta / 180.0 * math.pi
     camDist = math.sqrt(cx * cx + cy * cy + cz * cz)
     cx = -cx / camDist
@@ -110,7 +112,8 @@ def camRotQuaternion(cx, cy, cz, theta):
     q4 = -cz * math.sin(theta * 0.5)
     return (q1, q2, q3, q4)
 
-def quaternionProduct(qx, qy): 
+
+def quaternionProduct(qx, qy):
     a = qx[0]
     b = qx[1]
     c = qx[2]
@@ -125,6 +128,7 @@ def quaternionProduct(qx, qy):
     q4 = a * h + b * g - c * f + d * e    
     return (q1, q2, q3, q4)
 
+
 def obj_centened_camera_pos(dist, azimuth_deg, elevation_deg):
     phi = float(elevation_deg) / 180 * math.pi
     theta = float(azimuth_deg) / 180 * math.pi
@@ -133,49 +137,58 @@ def obj_centened_camera_pos(dist, azimuth_deg, elevation_deg):
     z = (dist * math.sin(phi))
     return (x, y, z)
 
+
 # Input parameters
 shape_file = sys.argv[-5]
 shape_synset = sys.argv[-4]
 shape_md5 = sys.argv[-3]
 shape_view_params_file = sys.argv[-2]
-print(shape_view_params_file)
 syn_images_folder = sys.argv[-1]
 if not os.path.exists(syn_images_folder):
     os.mkdir(syn_images_folder)
-#syn_images_folder = os.path.join(g_syn_images_folder, shape_synset, shape_md5) 
+#syn_images_folder = os.path.join(g_syn_images_folder, shape_synset, shape_md5)
 view_params = [[float(x) for x in line.strip().split(' ')] for line in open(shape_view_params_file).readlines()]
 
 if not os.path.exists(syn_images_folder):
     os.makedirs(syn_images_folder)
-
-bpy.ops.import_scene.obj(filepath=shape_file) 
-
+# Use Blender Cycles engin
+bpy.context.scene.render.engine = 'CYCLES'
+bpy.context.scene.cycles.device = 'GPU'
 bpy.context.scene.render.alpha_mode = 'TRANSPARENT'
+bpy.context.scene.render.tile_x = 512
+bpy.context.scene.render.tile_y = 512
+bpy.context.scene.cycles.max_bounces = 4
+bpy.context.scene.cycles.min_bounces = 1
+
+bpy.ops.import_scene.obj(filepath=shape_file)
+
+# Fantastic settings
 #bpy.context.scene.render.use_shadows = False
 #bpy.context.scene.render.use_raytrace = False
-
-bpy.data.objects['Lamp'].data.energy = 0
-
 #m.subsurface_scattering.use = True
 
+# Camera
 camObj = bpy.data.objects['Camera']
 # camObj.data.lens_unit = 'FOV'
 # camObj.data.angle = 0.2
 
-# set lights
+# delete default Lamp
 bpy.ops.object.select_all(action='TOGGLE')
 if 'Lamp' in list(bpy.data.objects.keys()):
-    bpy.data.objects['Lamp'].select = True # remove default light
+    bpy.data.objects['Lamp'].select = True  # remove default light
 bpy.ops.object.delete()
 
 # YOUR CODE START HERE
-img_num = 0
-for param in view_params:
+for img_num, param in enumerate(view_params):
     azimuth_deg = param[0]
     elevation_deg = param[1]
     theta_deg = param[2]
-    rho = param[3]
-    label = param[4]
+    rho = 0  # param[3]
+    #label = param[4]
+
+    bpy.context.scene.render.layers[0].cycles.use_denoising = np.random.randint(2)
+    samples = 2 ** np.random.randint(2, high=11)
+    bpy.data.scenes['Scene'].cycles.samples = samples
 
     # clear default lights
     bpy.ops.object.select_by_type(type='LAMP')
@@ -188,32 +201,33 @@ for param in view_params:
     bpy.context.scene.world.light_settings.environment_color = 'PLAIN'
 
     # set point lights
-    for i in range(random.randint(light_num_lowbound,light_num_highbound)):
+    for i in range(random.randint(light_num_lowbound, light_num_highbound)):
         light_azimuth_deg = np.random.uniform(g_syn_light_azimuth_degree_lowbound, g_syn_light_azimuth_degree_highbound)
-        light_elevation_deg  = np.random.uniform(g_syn_light_elevation_degree_lowbound, g_syn_light_elevation_degree_highbound)
+        light_elevation_deg = np.random.uniform(g_syn_light_elevation_degree_lowbound, g_syn_light_elevation_degree_highbound)
         light_dist = np.random.uniform(light_dist_lowbound, light_dist_highbound)
         lx, ly, lz = obj_centened_camera_pos(light_dist, light_azimuth_deg, light_elevation_deg)
-        bpy.ops.object.lamp_add(type='POINT', view_align = False, location=(lx, ly, lz))
+
+        bpy.ops.object.lamp_add(type='POINT', view_align=False, location=(lx, ly, lz))
         bpy.data.objects['Point'].data.energy = np.random.normal(g_syn_light_energy_mean, g_syn_light_energy_std)
+
+        light_nodes = bpy.data.objects['Point'].data.node_tree.nodes
+        light_nodes['Emission'].inputs['Strength'].default_value = 100
+        light_nodes['Emission'].inputs['Color'].default_value = (0.2, 0.2, 0, 1.0)
 
     cx, cy, cz = obj_centened_camera_pos(rho, azimuth_deg, elevation_deg)
     q1 = camPosToQuaternion(cx, cy, cz)
     q2 = camRotQuaternion(cx, cy, cz, theta_deg)
     q = quaternionProduct(q2, q1)
-    camObj.location[0] = cx
-    camObj.location[1] = cy 
-    camObj.location[2] = cz
+    camObj.location = [cx, cy, cz]
     camObj.rotation_mode = 'QUATERNION'
-    camObj.rotation_quaternion[0] = q[0]
-    camObj.rotation_quaternion[1] = q[1]
-    camObj.rotation_quaternion[2] = q[2]
-    camObj.rotation_quaternion[3] = q[3]
+    camObj.rotation_quaternion = q
+
     # ** multiply tilt by -1 to match pascal3d annotations **
     #theta_deg = (-1*theta_deg)%360
     #syn_image_file = './label%d_no%d.png' % (label, img_num)
     syn_image_file = './no%d_azi%d_ele%d.png' % (img_num, azimuth_deg*100, elevation_deg*100)
     bpy.data.scenes['Scene'].render.filepath = os.path.join(syn_images_folder, syn_image_file)
-    bpy.ops.render.render( write_still=True )
+    bpy.ops.render.render(write_still=True)
     '''
     rawpara_path = os.path.join(g_data_folder, 'raw.txt')
     with open(rawpara_path, 'a') as f:

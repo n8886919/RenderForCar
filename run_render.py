@@ -18,8 +18,8 @@ from render_helper import *
 
 if __name__ == '__main__':
     if not os.path.exists(g_syn_images_folder):
-        os.mkdir(g_syn_images_folder) 
-    idx=5
+        os.mkdir(g_syn_images_folder)
+    idx = 5
     synset = '02958343'
     print('%d: %s, %s\n' % (idx, synset, g_shape_names[idx]))
     shape_list = load_one_category_shape_list(synset)
