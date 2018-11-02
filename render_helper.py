@@ -15,8 +15,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #sys.path.append(os.path.dirname(BASE_DIR))
 from global_variables import *
 
-model_list = 'data/CAD_preview/selected_704models.txt'
-
+model_list = g_syn_model_list
 
 def load_one_category_shape_list(shape_synset):
     '''
@@ -85,7 +84,7 @@ def render_one_category_model_views(shape_list, view_params):
     for shape_synset, shape_md5, shape_file, _ in shape_list:
         if shape_md5 not in L:
             continue
-
+        
         tmp = tempfile.NamedTemporaryFile(dir=tmp_dirname, delete=False)
         # write tmp view file
         for i in range(g_syn_images_num_per_CAD):
@@ -98,8 +97,9 @@ def render_one_category_model_views(shape_list, view_params):
                 view_params[paramId][4])
             tmp.write(tmp_string)
         tmp.close()
-        command = ('%s %s --background --python %s -- %s %s %s %s %s '
-                   '> /dev/null 2>&1') % (
+        a = '> /dev/null 2>&1'
+        #a = ''
+        command = ('%s %s --background --python %s -- %s %s %s %s %s' + a) % (
             g_blender_executable_path,
             g_blank_blend_file_path,
             os.path.join(BASE_DIR, 'render_model_views.py'),
