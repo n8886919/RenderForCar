@@ -47,7 +47,8 @@ def load_one_category_shape_views(synset):
         print('Failed to read view distribution files from %s for synset %s' % 
               (g_view_distribution_files[synset], synset))
         exit()
-    view_params = open(g_view_distribution_files[synset]).readlines()
+    #view_params = open(g_view_distribution_files[synset]).readlines()
+    view_params = open(g_view_distribution_folder+'/no_label_elemax60.txt').readlines()
     view_params = [[float(x) for x in line.strip().split(' ')] for line in view_params] 
     return view_params
 

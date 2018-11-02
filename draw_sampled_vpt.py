@@ -65,6 +65,7 @@ for i in range(sample):
 		E.append(ele*180/math.pi) #E.append(10)
 		T.append(0.) #T.append((np.random.rand()-0.5)*2*til_max)
 		D.append(1.5) #D.append(np.random.rand()*9+1)
+		L.append(0)
 		'''		
 		r = math.sqrt(1 - pow(z,2))
 		y = math.sin(phi) * r
@@ -85,8 +86,9 @@ a = [A,E,T,D,L]
 b = np.swapaxes(a,1,0)
 np.savetxt('data/view_distribution/car24_no_tile.txt', b, fmt='%.3f %.3f %.3f %.3f %d')
 '''
-view_parameter = np.swapaxes([A,E,T,D],1,0)
-np.savetxt('data/view_distribution/no_label_elemax60.txt', view_parameter, fmt='%.3f %.3f %.3f %.3f')
+view_parameter = np.swapaxes([A,E,T,D,L],1,0)
+np.savetxt('data/view_distribution/no_label_elemax60.txt', view_parameter, 
+	fmt='%.3f %.3f %.3f %.3f %d')
 '''
 f1 = plt.figure(1)
 ax = Axes3D(f1)

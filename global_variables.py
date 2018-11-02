@@ -33,11 +33,12 @@ g_shape_synset_name_pairs = [('02691156', 'aeroplane'),
 g_shape_synsets = [x[0] for x in g_shape_synset_name_pairs]
 g_shape_names = [x[1] for x in g_shape_synset_name_pairs]
 
-g_syn_images_folder = os.path.join(g_data_folder, 'syn_images')
+#g_syn_images_folder = os.path.join(g_data_folder, 'syn_images')
+g_syn_images_folder = '/media/showay/newDisk/nolan/nolabel'
 g_syn_images_bkg_overlaid_folder = os.path.join(g_data_folder, 'syn_images_cropped_bkg_overlaid')
 #g_syn_bkg_folder = os.path.join(g_sun2012pascalformat_root_folder, 'JPEGImages')
 g_blank_blend_file_path = os.path.join(g_render4cnn_root_folder, 'blank.blend') 
-g_syn_images_num_per_CAD = 100
+g_syn_images_num_per_CAD = 500
 g_syn_rendering_thread_num = 2
 
 g_view_distribution_folder = os.path.join(g_data_folder, 'view_distribution')
