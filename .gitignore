@@ -1,16 +1,10 @@
 *.pyc
-*.m~
-*.mat
 *.mex*
 *.dll
-*.caffemodel
 *.solverstate
 blender-2.71-linux-glibc211-x86_64
-data/*
+data
 datasets/pascal3d
 datasets/shapenetcore
 datasets/sun2012pascalformat
-*deformed*
-experiments
 
-*.png

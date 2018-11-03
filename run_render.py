@@ -8,7 +8,7 @@ RENDER_ALL_SHAPES
 
 import os
 import sys
-import socket
+import time
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
@@ -18,10 +18,13 @@ from render_helper import *
 
 if __name__ == '__main__':
     if not os.path.exists(g_syn_images_folder):
-        os.mkdir(g_syn_images_folder) 
-    idx=5
+        os.mkdir(g_syn_images_folder)
+    idx = 5
     synset = '02958343'
     print('%d: %s, %s\n' % (idx, synset, g_shape_names[idx]))
     shape_list = load_one_category_shape_list(synset)
     view_params = load_one_category_shape_views(synset)
+    t = time.time()
+    print(t)
     render_one_category_model_views(shape_list, view_params)
+    print(time.time() - t)
