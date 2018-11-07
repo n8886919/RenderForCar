@@ -8,10 +8,11 @@ from global_variables import *
 
 sys.path.append(g_ros_path)
 sys.path.append(g_python_env_path)
+sys.path.append(g_python_env_path2)
 
 import rospy
 from std_msgs.msg import Float32MultiArray
-
+from std_msgs.msg import Int16MultiArray
 
 def camPosToQuaternion(cx, cy, cz):
     camDist = math.sqrt(cx * cx + cy * cy + cz * cz)
@@ -166,7 +167,8 @@ def init_ros_node():
     scene.node_tree.links.new(RL_node.outputs[1], view_node.inputs[1])
 
     rospy.init_node('blender_publisher', anonymous=True)
-    pub = rospy.Publisher('/blender/image', Float32MultiArray, queue_size=10)
+    #pub = rospy.Publisher('/blender/image', Float32MultiArray, queue_size=10)
+    pub = rospy.Publisher('/blender/image', Int16MultiArray, queue_size=10)
     return pub
 
 
@@ -260,7 +262,9 @@ def render(path=None, pub_node=None):
 
     if pub_node is not None:
         data = np.array(bpy.data.images['Viewer Node'].pixels)
-        ros_array = Float32MultiArray()
+        data= np.power(data, 1/2.2) * 255.
+        data = np.clip(np.around(data), 0, 255).astype('int')
+        ros_array = Int16MultiArray()
         ros_array.data = data
         pub_node.publish(ros_array)
 
