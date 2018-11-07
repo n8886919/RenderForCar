@@ -1,5 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 '''
 RENDER_ALL_SHAPES
 @brief:

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
 RENDER_MODEL_VIEWS.py
@@ -28,9 +28,11 @@ import numpy as np
 # Load rendering light parameters
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
-sys.path.append(BASE_DIR+'/moduel')
+sys.path.append(BASE_DIR + '/module')
 from global_variables import *
 from module.blender_helper import *
+
+
 
 light_num_lowbound = g_syn_light_num_lowbound
 light_num_highbound = g_syn_light_num_highbound
@@ -57,7 +59,6 @@ if not os.path.exists(syn_images_folder):
 view_params = [[float(x) for x in line.strip().split(' ')] for line in open(shape_view_params_file).readlines()]
 
 init_render_engine(film_transparent=True)
-init_background_node()
 import_obj(mdl=shape_file)
 
 for img_num, param in enumerate(view_params):
