@@ -253,7 +253,7 @@ def set_camera(xyz=(1.0, -1.0, 0.65), quaternion=None):
         camObj.rotation_quaternion = quaternion
 
 
-def render(path=None, pub_node=None):
+def render(path=None, pub_node=None, label=(0, 0)):
     write = False
     if path is not None:
         bpy.data.scenes['Scene'].render.filepath = path
@@ -264,8 +264,12 @@ def render(path=None, pub_node=None):
         data = np.array(bpy.data.images['Viewer Node'].pixels)
         data= np.power(data, 1/2.2) * 255.
         data = np.clip(np.around(data), 0, 255).astype('int')
+
         ros_array = Int16MultiArray()
+        ros_array.layout.dim.append(MultiArrayDimension())
+        #ros_array.layout.dim[0].label = 'ros_azi%d_ele%d.png' % (azi, ele)
         ros_array.data = data
+   
         pub_node.publish(ros_array)
 
 

@@ -30,15 +30,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
 sys.path.append(BASE_DIR + '/module')
 from global_variables import *
-from module.blender_helper import *
-
-
-
+from rendercar_modules.blender_helper import *
+'''
 light_num_lowbound = g_syn_light_num_lowbound
 light_num_highbound = g_syn_light_num_highbound
 light_dist_lowbound = g_syn_light_dist_lowbound
 light_dist_highbound = g_syn_light_dist_highbound
-
+'''
+bg_images = os.listdir(g_sun2012_image_folder)
 # Input parameters
 
 shape_file = sys.argv[-5]
@@ -84,8 +83,11 @@ for img_num, param in enumerate(view_params):
         # random strength, rgba
     '''
     set_camera_from_angle(azi, ele, rho)
-    set_background(path='/home/showay/Desktop/RenderForCar/test/3.jpg')
-    if img_num%10 == 9:
+    img_index = np.random.randint(len(bg_images))
+    bg_image = os.path.join(g_sun2012_image_folder, bg_images[img_index])
+    set_background(bg_image)
+
+    if img_num%5 == 4:
         material_randomize()
 
     syn_image_file = './no%d_azi%d_ele%d.png' % (img_num, azi*100, ele*100)

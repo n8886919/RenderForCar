@@ -2,8 +2,9 @@ import math, random
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import os
 
-ele_max = 60  # 30
+ele_max = 30
 #til_max = 10 #+-til_max
 sample = 1000000
 
@@ -87,7 +88,11 @@ b = np.swapaxes(a,1,0)
 np.savetxt('data/view_distribution/car24_no_tile.txt', b, fmt='%.3f %.3f %.3f %.3f %d')
 '''
 view_parameter = np.swapaxes([A, E, T, D, L], 1, 0)
-np.savetxt('../data/view_distribution/car.txt',
+
+save_dir = '../data/view_distribution'
+if not os.path.exists(save_dir):
+    os.mkdir(save_dir)
+np.savetxt(save_dir + '/car.txt',
            view_parameter,
            fmt='%.3f %.3f %.3f %.3f %d')
 '''

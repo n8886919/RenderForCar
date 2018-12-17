@@ -30,7 +30,7 @@ while not rospy.is_shutdown():
         ele = np.random.rand() * ele_amx
         set_camera_from_angle(azi, ele, 1.5)
         material_randomize()
-        render(pub_node=pub)
+        render(pub_node=pub, label=(azi,ele))
 
 '''
 export PYTHONPATH=$PYTHONPATH:~/Desktop/RenderForCar
