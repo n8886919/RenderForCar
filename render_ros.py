@@ -22,8 +22,8 @@ pub = init_ros_node()
 while not rospy.is_shutdown():
     remove_all_mesh()
     n = np.random.randint(len(model_list))
-    #n = os.path.join(model_list_path, '{}'.format(model_list[n]), 'model.obj')
-    n = '/home/showay/Desktop/RenderForCar/datasets/shapenetcore/02958343/1a64bf1e658652ddb11647ffa4306609/model.obj'
+    n = os.path.join(model_list_path, model_list[n], 'model.obj')
+    #n = '/home/showay/Desktop/RenderForCar/datasets/shapenetcore/02958343/1a64bf1e658652ddb11647ffa4306609/model.obj'
     import_obj(n)
     for counter in range(10):
         azi = np.random.rand() * 360

@@ -3,14 +3,17 @@
 
 import os
 
-#g_ros_path = '/opt/ros/melodic/lib/python2.7/dist-packages'
-#g_python_env_path = '/home/nolan/miniconda3/envs/py2/lib/python2.7/site-packages'
-g_ros_path = '/opt/ros/kinetic/lib/python2.7/dist-packages'
-g_python_env_path = '/home/showay/anaconda3/envs/py2/lib/python2.7/site-packages'
-g_python_env_path2 = '/usr/local/lib/python3.5/dist-packages'
-
-
 g_render4cnn_root_folder = os.path.dirname(os.path.abspath(__file__))
+
+g_syn_images_folder = '/home/nolan/Desktop/husky'
+g_syn_model_list = os.path.abspath(os.path.join(g_render4cnn_root_folder, 'rendercar_modules/selected_704models.txt'))
+g_python_path = [
+    '/home/nolan/miniconda3/envs/py2/lib/python2.7/site-packages',
+    '/opt/ros/melodic/lib/python2.7/dist-packages',
+    #'/opt/ros/kinetic/lib/python2.7/dist-packages',
+    #'~/anaconda3/envs/py2/lib/python2.7/site-packages',
+    #'/usr/local/lib/python3.5/dist-packages',
+    ]
 # ------------------------------------------------------------
 # PATHS
 # ------------------------------------------------------------
@@ -39,8 +42,6 @@ g_shape_names = [x[1] for x in g_shape_synset_name_pairs]
 
 g_blank_blend_file_path = os.path.join(g_render4cnn_root_folder, 'blank.blend')
 
-g_syn_images_folder = '/media/showay/newDisk/nolan/color_material'
-g_syn_model_list = os.path.abspath(os.path.join(g_render4cnn_root_folder, 'rendercar_modules/selected_704models.txt'))
 g_syn_images_num_per_CAD = 100
 g_syn_rendering_thread_num = 3
 

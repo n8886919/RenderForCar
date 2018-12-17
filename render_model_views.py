@@ -28,17 +28,17 @@ import numpy as np
 # Load rendering light parameters
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(BASE_DIR)
-sys.path.append(BASE_DIR + '/module')
+sys.path.append(BASE_DIR + '/rendercar_modules')
 from global_variables import *
-from module.blender_helper import *
+from rendercar_modules.blender_helper import *
 
 
-
+'''
 light_num_lowbound = g_syn_light_num_lowbound
 light_num_highbound = g_syn_light_num_highbound
 light_dist_lowbound = g_syn_light_dist_lowbound
 light_dist_highbound = g_syn_light_dist_highbound
-
+'''
 # Input parameters
 
 shape_file = sys.argv[-5]
@@ -59,13 +59,16 @@ if not os.path.exists(syn_images_folder):
 view_params = [[float(x) for x in line.strip().split(' ')] for line in open(shape_view_params_file).readlines()]
 
 init_render_engine(film_transparent=True)
-import_obj(mdl=shape_file)
+#import_obj(mdl=shape_file)
+bpy.ops.import_mesh.stl(
+    filepath="/home/nolan/Desktop/2dac3f819458bf004180b1b0697dbfa2.stl")
 
 for img_num, param in enumerate(view_params):
     azi = param[0]
     ele = param[1]
     theta = param[2]
     rho = param[3]
+    rho *= 100
     #label = param[4]
     denoising_strength = np.random.rand()
     samples = 2 ** np.random.randint(4, high=9)
@@ -84,7 +87,7 @@ for img_num, param in enumerate(view_params):
         # random strength, rgba
     '''
     set_camera_from_angle(azi, ele, rho)
-    set_background(path='/home/showay/Desktop/RenderForCar/test/3.jpg')
+    set_background(path='/home/nolan/Desktop/RenderForCar/test/3.jpg')
     if img_num%10 == 9:
         material_randomize()
 

@@ -6,9 +6,7 @@ import sys
 
 from global_variables import *
 
-sys.path.append(g_ros_path)
-sys.path.append(g_python_env_path)
-sys.path.append(g_python_env_path2)
+sys.path.extend(g_python_path)
 
 import rospy
 from std_msgs.msg import Float32MultiArray
