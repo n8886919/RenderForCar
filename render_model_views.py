@@ -33,12 +33,13 @@ from global_variables import *
 from rendercar_modules.blender_helper import *
 
 
-'''
-light_num_lowbound = g_syn_light_num_lowbound
-light_num_highbound = g_syn_light_num_highbound
-light_dist_lowbound = g_syn_light_dist_lowbound
-light_dist_highbound = g_syn_light_dist_highbound
-'''
+light_num_lb = g_syn_light_num_lowbound
+light_num_hb = g_syn_light_num_highbound
+light_dist_lb = g_syn_light_dist_lowbound
+light_dist_hb = g_syn_light_dist_highbound
+
+bg_images = os.listdir(g_sun2012_image_folder)
+
 # Input parameters
 
 shape_file = sys.argv[-5]
@@ -59,36 +60,36 @@ if not os.path.exists(syn_images_folder):
 view_params = [[float(x) for x in line.strip().split(' ')] for line in open(shape_view_params_file).readlines()]
 
 init_render_engine(film_transparent=True)
-#import_obj(mdl=shape_file)
-bpy.ops.import_mesh.stl(
-    filepath="/home/nolan/Desktop/2dac3f819458bf004180b1b0697dbfa2.stl")
+import_obj(mdl=shape_file)
 
 for img_num, param in enumerate(view_params):
     azi = param[0]
     ele = param[1]
     theta = param[2]
     rho = param[3]
-    rho *= 100
     #label = param[4]
-    denoising_strength = np.random.rand()
+    denoising_strength = np.random.rand()*0.2 + 0.8
     samples = 2 ** np.random.randint(4, high=9)
     set_render_engine(denoising_strength=denoising_strength, samples=samples)
 
     delete_light()
 
     # set point lights
-    '''
-    for i in range(random.randint(light_num_lowbound, light_num_highbound)):
+    for i in range(random.randint(light_num_lb, light_num_hb)):
         light_azimuth_deg = np.random.uniform(0, 360)
         light_elevation_deg = np.random.uniform(0, 90)
-        light_dist = np.random.uniform(light_dist_lowbound, light_dist_highbound)
+        light_dist = np.random.uniform(light_dist_lb, light_dist_hb)
         lx, ly, lz = obj_centened_camera_pos(light_dist, light_azimuth_deg, light_elevation_deg)
-        set_light(xyz=(lx, ly, lz))
+        set_light(xyz=(lx, ly, lz), rgba=(1.0, 1.0, 1.0, 0.2))
         # random strength, rgba
-    '''
+
     set_camera_from_angle(azi, ele, rho)
-    set_background(path='/home/nolan/Desktop/RenderForCar/test/3.jpg')
-    if img_num%10 == 9:
+
+    img_index = np.random.randint(len(bg_images))
+    bg_image = os.path.join(g_sun2012_image_folder, bg_images[img_index])
+    set_background(bg_image)
+
+    if img_num > 99 and img_num % 10 == 0:
         material_randomize()
 
     syn_image_file = './no%d_azi%d_ele%d.png' % (img_num, azi*100, ele*100)

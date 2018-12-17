@@ -98,8 +98,8 @@ def render_one_category_model_views(shape_list, view_params):
                 view_params[paramId][4])
             tmp.write(tmp_string)
         tmp.close()
-        #a = '> /dev/null 2>&1'
-        a = ''
+        a = '> /dev/null 2>&1'
+        #a = ''
         command = ('%s %s --background --python %s -- %s %s %s %s %s' + a) % (
             g_blender_executable_path,
             g_blank_blend_file_path,

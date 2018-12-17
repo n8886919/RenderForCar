@@ -6,7 +6,9 @@ import sys
 
 from global_variables import *
 
-sys.path.extend(g_python_path)
+sys.path.append(g_ros_path)
+sys.path.append(g_python_env_path)
+sys.path.append(g_python_env_path2)
 
 import rospy
 from std_msgs.msg import Float32MultiArray
@@ -121,10 +123,10 @@ def init_render_engine(film_transparent=True, denoising=True):
     scene.render.engine = 'CYCLES'
     scene.render.tile_x = 512
     scene.render.tile_y = 512
-    scene.render.resolution_x = 640 * 2
-    scene.render.resolution_y = 480 * 2
+    scene.render.resolution_x = 640
+    scene.render.resolution_y = 480
     #scene.render.image_settings.compression = 100
-    #scene.render.resolution_percentage = 100
+    scene.render.resolution_percentage = 100
     #scene.render.use_shadows = False
     #scene.render.use_raytrace = 0#True
     scene.render.layers[0].cycles.use_denoising = denoising
@@ -137,7 +139,7 @@ def init_render_engine(film_transparent=True, denoising=True):
 
     # init_background_node():
     world = bpy.data.worlds['World']
-    world.light_settings.use_ambient_occlusion = True
+    #world.light_settings.use_ambient_occlusion = True
     world.use_nodes = True
     env_node = world.node_tree.nodes.new('ShaderNodeTexEnvironment')
     background_node = world.node_tree.nodes.get('Background')
@@ -251,7 +253,7 @@ def set_camera(xyz=(1.0, -1.0, 0.65), quaternion=None):
         camObj.rotation_quaternion = quaternion
 
 
-def render(path=None, pub_node=None):
+def render(path=None, pub_node=None, label=(0, 0)):
     write = False
     if path is not None:
         bpy.data.scenes['Scene'].render.filepath = path
@@ -262,8 +264,12 @@ def render(path=None, pub_node=None):
         data = np.array(bpy.data.images['Viewer Node'].pixels)
         data= np.power(data, 1/2.2) * 255.
         data = np.clip(np.around(data), 0, 255).astype('int')
+
         ros_array = Int16MultiArray()
+        ros_array.layout.dim.append(MultiArrayDimension())
+        #ros_array.layout.dim[0].label = 'ros_azi%d_ele%d.png' % (azi, ele)
         ros_array.data = data
+   
         pub_node.publish(ros_array)
 
 
