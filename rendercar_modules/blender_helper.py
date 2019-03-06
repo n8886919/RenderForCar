@@ -7,12 +7,12 @@ import sys
 from global_variables import *
 
 sys.path.append(g_ros_path)
-sys.path.append(g_python_env_path)
-sys.path.append(g_python_env_path2)
+sys.path.extend(g_python_env_path)
 
 import rospy
 from std_msgs.msg import Float32MultiArray
 from std_msgs.msg import Int16MultiArray
+
 
 def camPosToQuaternion(cx, cy, cz):
     camDist = math.sqrt(cx * cx + cy * cy + cz * cz)
@@ -262,14 +262,13 @@ def render(path=None, pub_node=None, label=(0, 0)):
 
     if pub_node is not None:
         data = np.array(bpy.data.images['Viewer Node'].pixels)
-        data= np.power(data, 1/2.2) * 255.
+        data = np.power(data, 1/2.2) * 255.
         data = np.clip(np.around(data), 0, 255).astype('int')
 
         ros_array = Int16MultiArray()
         ros_array.layout.dim.append(MultiArrayDimension())
         #ros_array.layout.dim[0].label = 'ros_azi%d_ele%d.png' % (azi, ele)
         ros_array.data = data
-   
         pub_node.publish(ros_array)
 
 
@@ -284,21 +283,22 @@ def show_available_node_name():
 def test():
     init_render_engine(film_transparent=True)
     remove_all_mesh()
-    set_background(path='/home/nolan/Desktop/RenderForCar/test/2.jpg')
+    set_background(path=g_render4cnn_root_folder + '/test/2.jpg')
     delete_light()
-    import_obj(mdl='/home/nolan/Desktop/RenderForCar/datasets/shapenetcore/02958343/1a1dcd236a1e6133860800e6696b8284/model.obj')
+    import_obj(mdl=g_render4cnn_root_folder+'/test/test_model/1a1dcd236a1e6133860800e6696b8284/model.obj')
     material_randomize()
     set_camera_from_angle(30, 30, 1.5)
-    render(path='/home/nolan/Desktop/RenderForCar/module/test.jpg')
+    render(path=g_render4cnn_root_folder+'/test/test_result.jpg')
 
 
 if __name__ == '__main__':
     test()
 
 '''
-blender /home/$USER/Desktop/RenderForCar/blank.blend --background \
---python /home/$USER/Desktop/RenderForCar/module/blender_helper.py
+### run from shell ###
+blender blank.blend --python rendercar_modules/blender_helper.py
 
+### run from blender python console ###
 import sys
 sys.path.append('/home/nolan/Desktop/RenderForCar/module')
 from blender_helper import *

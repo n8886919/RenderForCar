@@ -89,7 +89,8 @@ for img_num, param in enumerate(view_params):
     bg_image = os.path.join(g_sun2012_image_folder, bg_images[img_index])
     set_background(bg_image)
 
-    if img_num > 99 and img_num % 10 == 0:
+    if img_num > (g_syn_images_color_ratio*g_syn_images_num_per_CAD) and \
+       img_num % 10 == 0:
         material_randomize()
 
     syn_image_file = './no%d_azi%d_ele%d.png' % (img_num, azi*100, ele*100)
